@@ -1,9 +1,12 @@
 import {createContext, useReducer} from 'react'
+import axios from 'axios'
 import AppReducer from './AppReducer'
 
 
 const initialState = {
     //FILTERS
+    news:[],
+    loadingNews: true,
     filters : [
         {
             name: 'general',
@@ -36,10 +39,14 @@ const initialState = {
     ],
 }
 
+const API_URL = 'http://api.mediastack.com/v1/news';
+const API_KEY = '7af921ec33526b42e10f7946b64e9a07';
+const LANG = 'en';
+
 export const GlobalContext = createContext(initialState);
 
 // ACTIONS
-export const GlobalProvider = ({children}) => {
+export const GlobalProvider = ({children}) => {        
     //ADDING FIILTR
     function addFilter(name, value){
         // WE HAVE TO DIPATCH THING HERE
@@ -65,15 +72,39 @@ export const GlobalProvider = ({children}) => {
             payload: alteredFilter
         });;
     }
-    
+
+
+// NEWS ACTION
+    async function getNews(catagory){
+        try {
+            disptach({
+                type:'LOADING',
+            });
+            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}&& categories=${catagory}&languages=${LANG}`);
+            disptach({
+                type:'GET_NEWS',
+                payload: response.data.data
+            });
+            disptach({
+                type:'LOADED',
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
     // BINDING TO REDUCER
     const [state, disptach] = useReducer(AppReducer, initialState);
 
     return(
         <GlobalContext.Provider value={{
             filters: state.filters,
+            news: state.news,
+            loadingNews: state.loadingNews,
             addFilter,
             removeFilter,
+            getNews,
         }}>
             {children}
         </GlobalContext.Provider>

@@ -12,6 +12,24 @@ const App = (state, action) => {
             ...state,
             filters: [...state.filters.filter(eachFilter => eachFilter.name !== action.payload.name), action.payload]
         }
+        case 'GET_NEWS':
+        console.log('GET_REDUCER', action.payload);
+        return {
+            ...state,
+            news: action.payload
+        }
+        case 'LOADED':
+        console.log('LOADED_REDUCER');
+        return {
+            ...state,
+            loadingNews: false
+        }
+        case 'LOADING':
+        console.log('LOADING_REDUCER');
+        return {
+            ...state,
+            loadingNews: true
+        }
         default:
             return state
     }
