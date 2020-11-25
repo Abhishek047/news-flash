@@ -1,6 +1,8 @@
 import NewsCard from './NewsCard'
 import {GlobalContext} from '../../GlobalState/GlobalState'
-import {useEffect, useState, useContext} from 'react'
+import {useEffect, useContext, useState} from 'react'
+import Loading from '../Loading/Loading';
+import NoResul from '../NoResult/NoResul';
 
 function News() {
     // const news = [
@@ -53,15 +55,8 @@ function News() {
     //         published_at: "2020-12-17T23:35:06+00:00"
     //     },
     // ];
-    
-    const {news, getNews, loadingNews, filters} = useContext(GlobalContext);
-    useEffect(()=>{
-        if(news !== null){
-            // getNews('general');  
-        }
-    // eslint-disable-next-line
-    },[]);
-
+    const [noResult, setNoResult] = useState(false);
+    const {news, getNews, loadingNews, filters, noParams} = useContext(GlobalContext);
     useEffect(()=>{
         // if(loadingNews === false)
         // {
@@ -73,32 +68,40 @@ function News() {
                 }
             }
             )
-            if(selectedFilters){
+            if(selectedFilters.length !== 0){
+                setNoResult(false);
                 selectedFilters = selectedFilters.join();
-                console.log(selectedFilters);
                 getNews(selectedFilters);
             }
             else{
                 // SET_EVERYTHING TO EMPTY
+                noParams();
+                setNoResult(true);
                 console.log("EMPTY");    
             }
         // }
+        // eslint-disable-next-line
     },[filters])
 
     return (
-        <div className='news-container'>
-            {loadingNews}
+        <div>
             {
-                !loadingNews ? 
-                news.map((news, index) => {
-                return (<NewsCard 
-                    key={index} 
-                    news={news} 
-                    />)
-                }
-                ) 
+                noResult ? <><NoResul /> </>
                 :
-                <div>Loading...</div>
+                    !loadingNews ? 
+                    <div className='news-container'>
+                    {
+                        news.map((news, index) => {
+                        return (<NewsCard 
+                            key={index} 
+                            news={news} 
+                            />)
+                        }
+                        )
+                    } 
+                    </div>
+                    :
+                    <><Loading /></>
             }
         </div>
     )

@@ -47,7 +47,7 @@ export const GlobalContext = createContext(initialState);
 
 // ACTIONS
 export const GlobalProvider = ({children}) => {        
-    //ADDING FIILTR
+//ADDING FIILTR
     function addFilter(name, value){
         // WE HAVE TO DIPATCH THING HERE
         const alteredFilter={
@@ -60,7 +60,7 @@ export const GlobalProvider = ({children}) => {
         });;
     }
 
-    // REMOVE FILTER
+// REMOVE FILTER
     function removeFilter(name,value){
         // WE HAVE TO DIPATCH THING HERE
         const alteredFilter={
@@ -72,7 +72,12 @@ export const GlobalProvider = ({children}) => {
             payload: alteredFilter
         });;
     }
-
+// SET EMPTY
+    function noParams(){
+        disptach({
+            type:'LOADING',
+        });
+    }
 
 // NEWS ACTION
     async function getNews(catagory){
@@ -80,7 +85,7 @@ export const GlobalProvider = ({children}) => {
             disptach({
                 type:'LOADING',
             });
-            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}&& categories=${catagory}&languages=${LANG}`);
+            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}& categories=${catagory}&languages=${LANG}`);
             disptach({
                 type:'GET_NEWS',
                 payload: response.data.data
@@ -93,8 +98,31 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+// SEARCH NEWS
+    async function searchNews(keyword){
+        // REMOVE AFTER API FIX
+        const catagory = 'general';
+        try {
+            disptach({
+                type:'LOADING',
+            });
+            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}& categories=${catagory}&languages=${LANG}`);
+            if(response.data.data.length !== 0)
+            {
+                disptach({
+                    type:'GET_NEWS',
+                    payload: response.data.data
+                }); 
+                disptach({
+                    type:'LOADED',
+                });
+            }
+        } catch (err) {
+            console.log(err.data);
+        }
+    }
 
-    // BINDING TO REDUCER
+// BINDING TO REDUCER
     const [state, disptach] = useReducer(AppReducer, initialState);
 
     return(
@@ -105,6 +133,8 @@ export const GlobalProvider = ({children}) => {
             addFilter,
             removeFilter,
             getNews,
+            noParams,
+            searchNews,
         }}>
             {children}
         </GlobalContext.Provider>

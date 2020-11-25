@@ -28,6 +28,7 @@ const App = (state, action) => {
         console.log('LOADING_REDUCER');
         return {
             ...state,
+            news: [],
             loadingNews: true
         }
         default:
