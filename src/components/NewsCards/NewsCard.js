@@ -10,7 +10,7 @@ function NewsCard({news, row}) {
     //EXTRACT DATE
     const cardStyle={
         backgroundImage: news.image !== null ? `url(${news.image})` : `url(${Svg})`,
-        gridColumn: news.title.length > 50 ? 'span 2' : 'span 1'
+        flexBasis: news.title.length > 50 ? '59%' : '33%'
     }
     function displayDate(date)
     {

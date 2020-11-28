@@ -222,11 +222,18 @@ body,html{
 
 
 /* FILTERS */
+.container{
+  position: relative;
+  width: 90%;
+}
 .filters{
-  margin-top: 30px;
+  padding-top: 30px;
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
+  transition:all 0.5s ease-in-out;
 }
 .filter-item{
   margin: 5px;
@@ -262,12 +269,11 @@ body,html{
 /* NEWS CONTAINER */
 .news-container{
   margin: 50px auto;
-  display: grid;
-  grid-gap: 35px;
+  display: flex;
+  flex-flow: row wrap;
   /* flex-flow: row wrap; */
   /* max-width: 1000px; */
   width: 90%;
-  grid-template-columns: repeat(4, 1fr);
 }
 /* FLEX */
 /* .news-card:nth-child(1){

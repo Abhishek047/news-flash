@@ -10,9 +10,9 @@ function Search() {
         if(search.length !== 0)
         {
             let keywords = search.split(' ');
-            keywords = keywords.join();
-            console.log('API ERROR', keywords);
-            searchNews(`${keywords},${search}`);
+            keywords = keywords.join('+');
+            searchNews(`${keywords}+${search}`);
+            setSearch('');
         }
     }
     return (

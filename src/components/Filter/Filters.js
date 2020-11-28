@@ -20,12 +20,14 @@ function Filters() {
     },[filters])
 
     return (
-        <div className='filters'>
-            {
-                filters.map((filter) =>
-                    <FilterItem key={filter.name} name={filter.name} value={filter.value} handleChange={handleChange}/> 
-                )
-            }        
+        <div className='container'>
+            <div  className='filters'>
+                {
+                    filters.map((filter) =>
+                        <FilterItem key={filter.name} name={filter.name} value={filter.value} handleChange={handleChange}/> 
+                    )
+                }        
+            </div>
         </div>
     )
 }

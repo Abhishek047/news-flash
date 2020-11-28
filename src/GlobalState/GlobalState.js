@@ -101,12 +101,11 @@ export const GlobalProvider = ({children}) => {
 // SEARCH NEWS
     async function searchNews(keyword){
         // REMOVE AFTER API FIX
-        const catagory = 'general';
         try {
             disptach({
                 type:'LOADING',
             });
-            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}& categories=${catagory}&languages=${LANG}`);
+            const response  = await axios.get(`${API_URL}?access_key=${API_KEY}&keywords=${keyword}&languages=${LANG}`);
             if(response.data.data.length !== 0)
             {
                 disptach({
